@@ -21,4 +21,71 @@ Don't forget to update the version, in the `.excalidraw` file, as well as the ch
 
 ---
 
-![./debugging-flowchart-1.0.0-en.png](./debugging-flowchart-1.0.0-en.png)
+Start here
+---
+
+```mermaid
+flowchart TD
+  subgraph NewFeature
+    f-eg[Find example]
+  end
+  subgraph OnceWorked
+    s-code[Search code]
+  end
+  0([Bug Reported!]) ==> feature?{New feature?}
+  feature? -.No.-> worked?{Working before?}
+  worked? --Yes--> OnceWorked
+  worked? -.No.-> NewFeature
+  feature? --Yes--> NewFeature
+```
+
+OnceWorked
+---
+
+```mermaid
+flowchart TD
+  subgraph AlignCode
+    t-code[Try implement]
+  end
+  subgraph External
+    ext-3rd{External/Third?}
+  end
+  subgraph Recheck
+    all?{Exatly same?}
+  end
+  s-code[Search code] ==> code?{Same code?}
+  code? --Yes--> s-data[Search data]
+  code? -.No.-> AlignCode
+  s-data ==> data?{Same data?}
+  data? --Yes--> s-dep[Search dep]
+  data? -.No.-> a-data[Align data]
+  a-data ==> External
+  s-dep ==> dep?{Same dep?}
+  dep? --Yes--> s-env[Search env]
+  dep? -.No.-> a-dep[Align dep]
+  a-dep ==> External
+  s-env ==> env?{Same env?}
+  env? --Yes--> env#[ ]
+  env? -.No.-> a-env[Align env]
+  a-env ==> External
+  env# ==> Recheck
+```
+
+
+NewFeature
+---
+
+```mermaid
+flowchart TD
+  subgraph OnceWorked
+    code?{Same code?}
+  end
+  f-eg[Find example] --> local?{Local reference?}
+  local? --Yes--> comp[Compare diff]
+  local? -.No.-> remote?{Remote example?}
+  comp ==> OnceWorked
+  remote? --Yes--> bloker?{Block issue?}
+  remote? -.No.-> 1((Escalate!))
+  bloker? --Yes--> 1
+  bloker? -.No.-> f-eg
+```
